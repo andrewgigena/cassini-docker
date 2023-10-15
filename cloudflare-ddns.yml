@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  ddns-updater:
+    image: qmcgaw/ddns-updater
+    container_name: ddns-updater
+    network_mode: bridge
+    ports:
+      - 9249:8000/tcp
+    volumes:
+      - /home/shadows/cloudflare-ddns/:/updater/data
+    restart: always

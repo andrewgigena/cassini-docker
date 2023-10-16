@@ -7,6 +7,5 @@ services:
     ports:
       - 9249:8000/tcp
     volumes:
-      - /home/shadows/cloudflare-ddns/:/updater/data
-      - /dev/null:/updater/data/updates.json
+      - /home/shadows/cloudflare-ddns/config.json:/updater/data/config.json
     restart: always

@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: docker.io/library/postgres
+    environment:
+      PGUSER: "nextcloud"
+      POSTGRES_DB: "nextcloud"
+      POSTGRES_PASSWORD: ${NEXTCLOUD_PG_PASSWORD:?error}
+      POSTGRES_USER: "nextcloud"
+    restart: always
+    network_mode: bridge
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${NEXTCLOUD_PG_PATH:?error}:/var/lib/postgresql/data
+    privileged: false
+
+    nextcloud:
+      image: docker.io/library/nextcloud
+      environment:
+        NEXTCLOUD_TRUSTED_DOMAINS:
+        OVERWRITECLIURL: ${NEXTCLOUD_DOMAIN:?error}
+        OVERWRITEPROTOCOL: "https"
+        POSTGRES_DB: "nextcloud"
+        POSTGRES_HOST: "postgres"
+        POSTGRES_PASSWORD: ${NEXTCLOUD_PG_PASSWORD:?error}
+        POSTGRES_USER: "nextcloud"
+      restart: always
+      network_mode: bridge
+      ports:
+        - "6080:80"
+      volumes:
+        - ${NEXTCLOUD_MOUNT_PATH:?error}:/var/www/html

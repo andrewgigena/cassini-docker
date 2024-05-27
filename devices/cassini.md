@@ -160,7 +160,7 @@
     sudo sed -r -i.orig 's/#?DNSStubListener=yes/DNSStubListener=no/g' /etc/systemd/resolved.conf
     sudo sed -r -i.orig 's/#?MulticastDNS=yes/MulticastDNS=no/g' /etc/systemd/resolved.conf
     sudo systemctl restart systemd-resolved systemd-networkd
-    sudo systemctl enable --now avahi-daemon 
+    sudo systemctl enable --now avahi-daemon
     ```
 
 ### Installing docker
@@ -218,41 +218,3 @@
         -v /var/run/docker.sock:/var/run/docker.sock \
         containrrr/watchtower:latest
     ```
-
-### Installing the services on portainer
-
-1. Configure portainer:
-    - Go to https://cassini_ip:9443
-    - Create an admin user
-    - Select local
-    - Select the local docker environment
-    - Go to Stacks
-
-2. Create the stack cloudflare-ddns:
-    - Name: cloudflare-ddns
-    - Repository:
-        - URL: <https://github.com/andrewgigena/homelab-dockers>
-        - Reference: _default_
-        - Path in the repository: cassini/cloudflare-ddns.yml
-    - GitOps: True
-    - Deploy the stack
-
-3. Create the stack pihole:
-    - Name: pi-hole
-    - Repository:
-        - URL: <https://github.com/andrewgigena/homelab-dockers>
-        - Reference: _default_  
-        - Path in the repository: cassini/pi-hole.yml
-    - GitOps: True
-    - Deploy the stack
-
-4. Create the stack nginx-proxy-manager:
-    - Name: nginx-proxy-manager
-    - Repository:
-        - URL: <https://github.com/andrewgigena/homelab-dockers>>
-        - Reference: _default_
-        - Path in the repository: cassini/nginx-proxy-manager.yml
-    - GitOps: True
-    - Deploy the stack
-
-5. Setup everything and enjoy!

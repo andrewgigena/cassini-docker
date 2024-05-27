@@ -1,34 +1,41 @@
 version: "3.8"
 
+configs:
+  environment:
+    - NEXTCLOUD_POSTGRES_DB: ${NEXTCLOUD_POSTGRES_DB:-nextcloud}
+    - NEXTCLOUD_POSTGRES_USER: ${NEXTCLOUD_POSTGRES_USER:-nextcloud}
+    - NEXTCLOUD_POSTGRES_PASSWORD: ${NEXTCLOUD_POSTGRES_PASSWORD:?Missing NEXTCLOUD_POSTGRES_PASSWORD}
+    - NEXTCLOUD_POSTGRES_PATH: ${NEXTCLOUD_POSTGRES_PATH:?Missing NEXTCLOUD_POSTGRES_PATH}
+    - NEXTCLOUD_DOMAIN: ${NEXTCLOUD_DOMAIN:?Missing NEXTCLOUD_DOMAIN}
+    - NEXTCLOUD_PORT: ${NEXTCLOUD_PORT:-80}
+    - NEXTCLOUD_PATH: ${NEXTCLOUD_PATH?Missing NEXTCLOUD_PATH}
+
 services:
   postgres:
     image: docker.io/library/postgres
     environment:
-      PGUSER: "nextcloud"
-      POSTGRES_DB: "nextcloud"
-      POSTGRES_PASSWORD: ${NEXTCLOUD_PG_PASSWORD:?error}
-      POSTGRES_USER: "nextcloud"
+      PGUSER: $NEXTCLOUD_POSTGRES_USER
+      POSTGRES_DB: $NEXTCLOUD_POSTGRES_DB
+      POSTGRES_PASSWORD: $NEXTCLOUD_POSTGRES_PASSWORD
+      POSTGRES_USER: $NEXTCLOUD_POSTGRES_USER
     restart: always
     network_mode: bridge
-    ports:
-      - "5432:5432"
     volumes:
-      - ${NEXTCLOUD_PG_PATH:?error}:/var/lib/postgresql/data
-    privileged: false
+      - $NEXTCLOUD_POSTGRES_PATH:/var/lib/postgresql/data
 
     nextcloud:
       image: docker.io/library/nextcloud
       environment:
-        NEXTCLOUD_TRUSTED_DOMAINS:
-        OVERWRITECLIURL: ${NEXTCLOUD_DOMAIN:?error}
+        NEXTCLOUD_TRUSTED_DOMAINS: $NEXTCLOUD_DOMAIN
+        OVERWRITECLIURL: $NEXTCLOUD_DOMAIN
         OVERWRITEPROTOCOL: "https"
-        POSTGRES_DB: "nextcloud"
+        POSTGRES_DB: $NEXTCLOUD_POSTGRES_DB
         POSTGRES_HOST: "postgres"
-        POSTGRES_PASSWORD: ${NEXTCLOUD_PG_PASSWORD:?error}
-        POSTGRES_USER: "nextcloud"
+        POSTGRES_PASSWORD: $NEXTCLOUD_POSTGRES_PASSWORD
+        POSTGRES_USER: $NEXTCLOUD_POSTGRES_USER
       restart: always
       network_mode: bridge
       ports:
-        - "6080:80"
+        - $NEXTCLOUD_PORT:80
       volumes:
-        - ${NEXTCLOUD_MOUNT_PATH:?error}:/var/www/html
+        - $NEXTCLOUD_MOUNT_PATH:/var/www/html

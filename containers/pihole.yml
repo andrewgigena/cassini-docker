@@ -1,0 +1,26 @@
+version: "3"
+
+config:
+  environment:
+    - PIHOLE_PATH: ${PIHOLE_PATH:?Missing PIHOLE_PATH}
+    - PIHOLE_DNSMASQ_PATH: ${PIHOLE_DNSMASQ_PATH:?Missing PIHOLE_DNSMASQ_PATH}
+
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    #network_mode: "host"
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "80:80/tcp"
+    environment:
+      TZ: 'America/Chicago'
+      DNSMASQ_LISTENING: 'all'
+    volumes:
+      - $PIHOLE_PATH:/etc/pihole
+      - $PIHOLE_DNSMASQ_PATH:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN 
+    restart: unless-stopped

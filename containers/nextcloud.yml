@@ -24,19 +24,19 @@ services:
     volumes:
       - $NEXTCLOUD_POSTGRES_PATH:/var/lib/postgresql/data
 
-    nextcloud:
-      image: docker.io/library/nextcloud
-      environment:
-        NEXTCLOUD_TRUSTED_DOMAINS: $NEXTCLOUD_DOMAIN
-        OVERWRITECLIURL: "$NEXTCLOUD_PROTOCOL://$NEXTCLOUD_DOMAIN"
-        OVERWRITEPROTOCOL: $NEXTCLOUD_PROTOCOL
-        POSTGRES_DB: $NEXTCLOUD_POSTGRES_DB
-        POSTGRES_HOST: "postgres"
-        POSTGRES_PASSWORD: $NEXTCLOUD_POSTGRES_PASSWORD
-        POSTGRES_USER: $NEXTCLOUD_POSTGRES_USER
-      restart: always
-      network_mode: bridge
-      ports:
-        - $NEXTCLOUD_PORT:80
-      volumes:
-        - $NEXTCLOUD_MOUNT_PATH:/var/www/html
+  nextcloud:
+    image: docker.io/library/nextcloud
+    environment:
+      NEXTCLOUD_TRUSTED_DOMAINS: $NEXTCLOUD_DOMAIN
+      OVERWRITECLIURL: "$NEXTCLOUD_PROTOCOL://$NEXTCLOUD_DOMAIN"
+      OVERWRITEPROTOCOL: $NEXTCLOUD_PROTOCOL
+      POSTGRES_DB: $NEXTCLOUD_POSTGRES_DB
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PASSWORD: $NEXTCLOUD_POSTGRES_PASSWORD
+      POSTGRES_USER: $NEXTCLOUD_POSTGRES_USER
+    restart: always
+    network_mode: bridge
+    ports:
+      - $NEXTCLOUD_PORT:80
+    volumes:
+      - $NEXTCLOUD_MOUNT_PATH:/var/www/html

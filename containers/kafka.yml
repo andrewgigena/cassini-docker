@@ -1,0 +1,9 @@
+name: kafka
+
+services:
+  kafka:
+    image: apache/kafka
+    hostname: kafka
+    ports:
+      - 9092:9092
+    restart: always

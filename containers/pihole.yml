@@ -1,9 +1,10 @@
-version: "3"
+name: pihole
 
 config:
   environment:
     - PIHOLE_PATH: ${PIHOLE_PATH:?Missing PIHOLE_PATH}
     - PIHOLE_DNSMASQ_PATH: ${PIHOLE_DNSMASQ_PATH:?Missing PIHOLE_DNSMASQ_PATH}
+
 
 services:
   pihole:
@@ -16,9 +17,10 @@ services:
     environment:
       TZ: 'America/Chicago'
       DNSMASQ_LISTENING: 'all'
+    network_mode: bridge
     volumes:
       - $PIHOLE_PATH:/etc/pihole
       - $PIHOLE_DNSMASQ_PATH:/etc/dnsmasq.d
     cap_add:
       - NET_ADMIN 
-    restart: unless-stopped
+    restart: always

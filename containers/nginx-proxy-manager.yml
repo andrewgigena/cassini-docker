@@ -2,7 +2,7 @@ version: '3.8'
 services:
   app:
     image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
+    restart: always
     ports:
       - '8080:80'
       - '8081:81'
@@ -10,5 +10,4 @@ services:
     volumes:
       - /home/shadows/nginx/data:/data
       - /home/shadows/nginx/letsencrypt:/etc/letsencrypt
-    # network_mode: "host"
 
